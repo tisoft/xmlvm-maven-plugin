@@ -18,17 +18,16 @@ package de.tisoft.xmlvm;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.xmlvm.Main;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * Goal which touches a timestamp file.
  *
- * @goal touch
+ * @goal generate-xmlvm
  * 
- * @phase process-sources
+ * @phase prepare-package
  */
 public class MyMojo
     extends AbstractMojo
@@ -38,44 +37,44 @@ public class MyMojo
      * @parameter expression="${project.build.directory}"
      * @required
      */
-    private File outputDirectory;
+    private File out;
+    
+    /**
+     * Location of the file.
+     * @parameter expression="${project.build.directory}/classes"
+     * @required
+     */
+    private File in;
+    
+    /**
+     * Location of the file.
+     * @parameter
+     * @required
+     */
+    private String target;
+    
+    /**
+     * Location of the file.
+     * @parameter expression="${project.name}"
+     * @required
+     */
+     private String app_name;
 
     public void execute()
         throws MojoExecutionException
     {
-        File f = outputDirectory;
+    	try {
+    		System.setProperty("one-jar.jar.path", System.getProperty("xmlvm.sdk.path")+"/dist/xmlvm.jar");
 
-        if ( !f.exists() )
-        {
-            f.mkdirs();
-        }
-
-        File touch = new File( f, "touch.txt" );
-
-        FileWriter w = null;
-        try
-        {
-            w = new FileWriter( touch );
-
-            w.write( "touch.txt" );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "Error creating file " + touch, e );
-        }
-        finally
-        {
-            if ( w != null )
-            {
-                try
-                {
-                    w.close();
-                }
-                catch ( IOException e )
-                {
-                    // ignore
-                }
-            }
-        }
+   		Main.main(new String[]{
+					"--in="+in.getAbsolutePath(),
+					"--out="+out.getAbsolutePath(),
+					"--target="+target,
+					"--app-name="+app_name
+					});
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new MojoExecutionException("XMLVM failed "+System.getProperty("xmlvm.sdk.path") ,e);
+		}
     }
 }
