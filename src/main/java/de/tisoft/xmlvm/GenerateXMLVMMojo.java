@@ -23,18 +23,18 @@ import org.xmlvm.Main;
 import java.io.File;
 
 /**
- * Goal which touches a timestamp file.
+ * Goal which generates xmlvm sources
  *
  * @goal generate-xmlvm
  * 
  * @phase prepare-package
  */
-public class MyMojo
+public class GenerateXMLVMMojo
     extends AbstractMojo
 {
     /**
      * Location of the file.
-     * @parameter expression="${project.build.directory}"
+     * @parameter expression="${project.build.directory}/${project.artifactId}"
      * @required
      */
     private File out;
