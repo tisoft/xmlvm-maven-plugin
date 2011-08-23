@@ -22,6 +22,11 @@ import org.xmlvm.Main;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Goal which generates xmlvm sources
@@ -34,18 +39,18 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 	/**
 	 * Location of the file.
 	 * 
-	 * @parameter expression="${project.build.directory}/${project.artifactId}"
-	 * @required
-	 */
-	private File out;
-
-	/**
-	 * Location of the file.
-	 * 
 	 * @parameter expression="${project.build.directory}/classes"
 	 * @required
 	 */
 	private File in;
+
+	/**
+	 * Location of the file.
+	 * 
+	 * @parameter expression="${project.build.directory}/${project.artifactId}"
+	 * @required
+	 */
+	private File out;
 
 	/**
 	 * Location of the file.
@@ -58,12 +63,11 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 	/**
 	 * Location of the file.
 	 * 
-	 * @parameter expression="warning"
-	 * @required
+	 * @parameter
+	 * @optional
 	 */
-	private String debug;
+	private List<String> lib;
 
-	
 	/**
 	 * Location of the file.
 	 * 
@@ -72,30 +76,58 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 	 */
 	private String app_name;
 
+	/**
+	 * Location of the file.
+	 * 
+	 * @parameter
+	 */
+	private List<String> resources;
+
+	/**
+	 * Location of the file.
+	 * 
+	 * @parameter
+	 * @optional
+	 */
+	private Map<String, String> xcodeProperties;
+
+	/**
+	 * Location of the file.
+	 * 
+	 * @parameter expression="warning"
+	 * @required
+	 */
+	private String debug;
+
 	public void execute() throws MojoExecutionException {
-		if (System.getProperty("xmlvm.sdk.path")==null){
-			throw new MojoExecutionException("xmlvm.sdk.path must be set");
-		}
-
-		String xmlvmJarPath = System.getProperty("xmlvm.sdk.path") + "/dist/xmlvm.jar";
-		
-		if (!new File(xmlvmJarPath).exists()){
-			throw new MojoExecutionException("Couldn't find dist/xmlvm.jar in xmlvm.sdk.path");
-		}
-
-		System.setProperty("one-jar.jar.path", xmlvmJarPath);
-
 		try {
-			String[] args = new String[] { 
-					"--in=" + in.getAbsolutePath(), 
-					"--out=" + out.getAbsolutePath(),
-					"--target=" + target, 
-					"--app-name=" + app_name, 
-					"--debug=" + debug };
-			getLog().info("Running XMLVM with command line: " + Arrays.asList(args));
-			Main.main(args);
+			List<String> args = new LinkedList<String>();
+			args.add("--in=" + in.getAbsolutePath());
+			args.add("--out=" + out.getAbsolutePath());
+			args.add("--target=" + target);
+			if (lib != null && !lib.isEmpty()) {
+				args.add("--lib=" + concat(lib, ","));
+			}
+			args.add("--app-name=" + app_name);
+			if (resources != null && !resources.isEmpty()) {
+				args.add("--resource=" + concat(resources, File.pathSeparator));
+			}
+			args.add("--debug=" + debug);
+			getLog().info("Running XMLVM with command line: " + args);
+			Main.main(args.toArray(new String[args.size()]));
 		} catch (Exception e) {
 			throw new MojoExecutionException("XMLVM failed " + System.getProperty("xmlvm.sdk.path"), e);
 		}
+	}
+
+	private String concat(Collection<String> collection, String delimiter) {
+		StringBuilder sb = new StringBuilder();
+		for (Iterator<String> iterator = collection.iterator(); iterator.hasNext();) {
+			sb.append(iterator.next());
+			if (iterator.hasNext()) {
+				sb.append(delimiter);
+			}
+		}
+		return sb.toString();
 	}
 }

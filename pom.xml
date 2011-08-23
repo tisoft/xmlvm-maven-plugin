@@ -51,6 +51,13 @@
 			<scope>system</scope>
 			<systemPath>${xmlvm.sdk.path}/lib/dx.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>org.xmlvm.dep</groupId>
+			<artifactId>xmlvm-onejar</artifactId>
+			<version>unreleased</version>
+			<scope>system</scope>
+			<systemPath>${xmlvm.sdk.path}/dist/xmlvm.jar</systemPath>
+		</dependency>
 
 		<!-- Dependencies for the plugin -->
 		<dependency>
