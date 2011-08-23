@@ -73,8 +73,19 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 	private String app_name;
 
 	public void execute() throws MojoExecutionException {
+		if (System.getProperty("xmlvm.sdk.path")==null){
+			throw new MojoExecutionException("xmlvm.sdk.path must be set");
+		}
+
+		String xmlvmJarPath = System.getProperty("xmlvm.sdk.path") + "/dist/xmlvm.jar";
+		
+		if (!new File(xmlvmJarPath).exists()){
+			throw new MojoExecutionException("Couldn't find dist/xmlvm.jar in xmlvm.sdk.path");
+		}
+
+		System.setProperty("one-jar.jar.path", xmlvmJarPath);
+
 		try {
-			System.setProperty("one-jar.jar.path", System.getProperty("xmlvm.sdk.path") + "/dist/xmlvm.jar");
 			String[] args = new String[] { 
 					"--in=" + in.getAbsolutePath(), 
 					"--out=" + out.getAbsolutePath(),
@@ -84,7 +95,6 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 			getLog().info("Running XMLVM with command line: " + Arrays.asList(args));
 			Main.main(args);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			throw new MojoExecutionException("XMLVM failed " + System.getProperty("xmlvm.sdk.path"), e);
 		}
 	}
