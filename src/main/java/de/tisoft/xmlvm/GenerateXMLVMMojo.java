@@ -21,60 +21,71 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.xmlvm.Main;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * Goal which generates xmlvm sources
- *
+ * 
  * @goal generate-xmlvm
  * 
  * @phase prepare-package
  */
-public class GenerateXMLVMMojo
-    extends AbstractMojo
-{
-    /**
-     * Location of the file.
-     * @parameter expression="${project.build.directory}/${project.artifactId}"
-     * @required
-     */
-    private File out;
-    
-    /**
-     * Location of the file.
-     * @parameter expression="${project.build.directory}/classes"
-     * @required
-     */
-    private File in;
-    
-    /**
-     * Location of the file.
-     * @parameter
-     * @required
-     */
-    private String target;
-    
-    /**
-     * Location of the file.
-     * @parameter expression="${project.name}"
-     * @required
-     */
-     private String app_name;
+public class GenerateXMLVMMojo extends AbstractMojo {
+	/**
+	 * Location of the file.
+	 * 
+	 * @parameter expression="${project.build.directory}/${project.artifactId}"
+	 * @required
+	 */
+	private File out;
 
-    public void execute()
-        throws MojoExecutionException
-    {
-    	try {
-    		System.setProperty("one-jar.jar.path", System.getProperty("xmlvm.sdk.path")+"/dist/xmlvm.jar");
+	/**
+	 * Location of the file.
+	 * 
+	 * @parameter expression="${project.build.directory}/classes"
+	 * @required
+	 */
+	private File in;
 
-   		Main.main(new String[]{
-					"--in="+in.getAbsolutePath(),
-					"--out="+out.getAbsolutePath(),
-					"--target="+target,
-					"--app-name="+app_name
-					});
+	/**
+	 * Location of the file.
+	 * 
+	 * @parameter
+	 * @required
+	 */
+	private String target;
+
+	/**
+	 * Location of the file.
+	 * 
+	 * @parameter expression="warning"
+	 * @required
+	 */
+	private String debug;
+
+	
+	/**
+	 * Location of the file.
+	 * 
+	 * @parameter expression="${project.name}"
+	 * @required
+	 */
+	private String app_name;
+
+	public void execute() throws MojoExecutionException {
+		try {
+			System.setProperty("one-jar.jar.path", System.getProperty("xmlvm.sdk.path") + "/dist/xmlvm.jar");
+			String[] args = new String[] { 
+					"--in=" + in.getAbsolutePath(), 
+					"--out=" + out.getAbsolutePath(),
+					"--target=" + target, 
+					"--app-name=" + app_name, 
+					"--debug=" + debug };
+			getLog().info("Running XMLVM with command line: " + Arrays.asList(args));
+			Main.main(args);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			throw new MojoExecutionException("XMLVM failed "+System.getProperty("xmlvm.sdk.path") ,e);
+			throw new MojoExecutionException("XMLVM failed " + System.getProperty("xmlvm.sdk.path"), e);
 		}
-    }
+	}
 }
