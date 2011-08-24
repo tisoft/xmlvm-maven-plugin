@@ -29,7 +29,7 @@
 							<goal>generate-xmlvm</goal>
 						</goals>
 						<configuration>
-						<target>c</target>
+						<target>posix</target>
 						</configuration>
 					</execution>
 				</executions>

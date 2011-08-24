@@ -84,6 +84,81 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 	private List<String> resources;
 
 	/**
+	 * Template to use for Xcode project: iphone iPhone project skeleton", ipad
+	 * iPad project skeleton", ios iPhone and iPad project skeleton", iphone3
+	 * Legacy iPhone 3.1 project skeleton",
+	 * 
+	 * @parameter expression="iphone"
+	 */
+	private String xcodeProject;
+
+	/**
+	 * The value of CFBundleIdentifier in Info.plist
+	 * 
+	 * @parameter expression="${project.groupId}.${project.artifactId}"
+	 */
+	private String bundleIdentifier;
+
+	/**
+	 * The value of CFBundleVersion in Info.plist
+	 * 
+	 * @parameter expression="${project.version}"
+	 */
+	private String bundleVersion;
+
+	/**
+	 * The value of CFBundleDisplayName in Info.plist
+	 * 
+	 * @parameter
+	 */
+	private String bundleDisplayName;
+
+	/**
+	 * The iPhone application icon is already pre-rendered
+	 * 
+	 * @parameter
+	 */
+	private boolean prerenderedIcon;
+
+	/**
+	 * Hide (value is 'true') or display (value is 'false') status bar
+	 * 
+	 * @parameter
+	 */
+	private boolean statusBarHidden;
+
+	/**
+	 * Application does not run in background on suspend
+	 * 
+	 * @parameter
+	 */
+	private boolean applicationExits = true;
+
+	/**
+	 * Initial interface orientation. Should be one of:
+	 * UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown
+	 * UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+	 * 
+	 * @parameter
+	 */
+	private String interfaceOrientation;
+
+	/**
+	 * Colon seperated list of supported interface orientations. See property
+	 * InterfaceOrientation
+	 * 
+	 * @parameter
+	 */
+	private List<String> supportedInterfaceOrientations;
+
+	/**
+	 * Colon separated list of custom fonts
+	 * 
+	 * @parameter
+	 */
+	private List<String> appFonts;
+
+	/**
 	 * Location of the file.
 	 * 
 	 * @parameter
@@ -112,6 +187,26 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 			if (resources != null && !resources.isEmpty()) {
 				args.add("--resource=" + concat(resources, File.pathSeparator));
 			}
+
+			args.add("-DXcodeProject=" + xcodeProject);
+			args.add("-DBundleIdentifier=" + bundleIdentifier);
+			args.add("-DBundleVersion=" + bundleVersion);
+			if (bundleDisplayName != null) {
+				args.add("-DBundleDisplayName=" + bundleDisplayName);
+			}
+			args.add("-DPrerenderedIcon=" + prerenderedIcon);
+			args.add("-DStatusBarHidden=" + statusBarHidden);
+			args.add("-DApplicationExits=" + applicationExits);
+			if (interfaceOrientation != null) {
+				args.add("-DInterfaceOrientation=" + interfaceOrientation);
+			}
+			if (supportedInterfaceOrientations != null && !supportedInterfaceOrientations.isEmpty()) {
+				args.add("-DSupportedInterfaceOrientations=" + concat(supportedInterfaceOrientations, ","));
+			}
+			if (appFonts != null && !appFonts.isEmpty()) {
+				args.add("-DAppFonts=" + concat(appFonts, ","));
+			}
+
 			args.add("--debug=" + debug);
 			getLog().info("Running XMLVM with command line: " + args);
 			Main.main(args.toArray(new String[args.size()]));
