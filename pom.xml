@@ -35,14 +35,18 @@
 			<version>2.7.1</version>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.saxon</groupId>
+			<groupId>org.xmlvm.dep</groupId>
 			<artifactId>saxon</artifactId>
-			<version>8.7</version>
+			<version>unreleased</version>
+			<scope>system</scope>
+			<systemPath>${xmlvm.sdk.path}/lib/saxon9.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.saxon</groupId>
+			<groupId>org.xmlvm.dep</groupId>
 			<artifactId>saxon-jdom</artifactId>
-			<version>8.7</version>
+			<version>unreleased</version>
+			<scope>system</scope>
+			<systemPath>${xmlvm.sdk.path}/lib/saxon9-jdom.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.xmlvm.dep</groupId>
