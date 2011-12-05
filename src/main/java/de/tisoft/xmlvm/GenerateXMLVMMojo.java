@@ -151,6 +151,14 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 	 */
 	private List<String> supportedInterfaceOrientations;
 
+    /**
+     * Is iTunes file sharing enabled?
+     *
+     * @parameter
+     */
+    private boolean fileSharingEnabled;
+
+
 	/**
 	 * Colon separated list of custom fonts
 	 * 
@@ -197,6 +205,7 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 			args.add("-DPrerenderedIcon=" + prerenderedIcon);
 			args.add("-DStatusBarHidden=" + statusBarHidden);
 			args.add("-DApplicationExits=" + applicationExits);
+            args.add("-DFileSharingEnabled=" + fileSharingEnabled);
 			if (interfaceOrientation != null) {
 				args.add("-DInterfaceOrientation=" + interfaceOrientation);
 			}
