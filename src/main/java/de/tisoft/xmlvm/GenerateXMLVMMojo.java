@@ -21,12 +21,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.xmlvm.Main;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Goal which generates xmlvm sources

@@ -24,12 +24,23 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>generate</id>
+						<id>generate-vtable</id>
+						<goals>
+							<goal>generate-xmlvm</goal>
+						</goals>
+						<configuration>
+						<target>vtable</target>
+						<out>${project.build.directory}/${project.artifactId}-vtable</out>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-posix</id>
 						<goals>
 							<goal>generate-xmlvm</goal>
 						</goals>
 						<configuration>
 						<target>posix</target>
+						<out>${project.build.directory}/${project.artifactId}-posix</out>
 						</configuration>
 					</execution>
 				</executions>
