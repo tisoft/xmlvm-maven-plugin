@@ -1,11 +1,10 @@
-import java.io.File;
-
 import junit.framework.TestCase;
-
 import org.apache.maven.it.Verifier;
 import org.apache.maven.it.util.ResourceExtractor;
 
-public class TrivialMavenVerifierIT extends TestCase
+import java.io.File;
+
+public class XmlvmTestIT extends TestCase
 {
     public void testMyPlugin ()
         throws Exception

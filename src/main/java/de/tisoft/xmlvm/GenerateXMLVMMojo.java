@@ -61,7 +61,7 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 	 * @parameter
 	 * @optional
 	 */
-	private List<String> lib;
+	private List<String> libs;
 
 	/**
 	 * Location of the file.
@@ -183,8 +183,8 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 			args.add("--in=" + in.getAbsolutePath());
 			args.add("--out=" + out.getAbsolutePath());
 			args.add("--target=" + target);
-			if (lib != null && !lib.isEmpty()) {
-				args.add("--lib=" + concat(lib, ","));
+			if (libs != null && !libs.isEmpty()) {
+				args.add("--lib=" + concat(libs, ","));
 			}
 			args.add("--app-name=" + app_name);
 			if (resources != null && !resources.isEmpty()) {
