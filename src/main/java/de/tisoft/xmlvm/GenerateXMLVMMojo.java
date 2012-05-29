@@ -177,6 +177,15 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 	 */
 	private String debug;
 
+    /**
+   	 * raw arguments are added to the xmlvm command line as is
+   	 *
+     * @parameter
+   	 * @optional
+   	 */
+   	private List<String> rawArguments;
+
+
 	public void execute() throws MojoExecutionException {
 		try {
 			List<String> args = new LinkedList<String>();
@@ -212,6 +221,11 @@ public class GenerateXMLVMMojo extends AbstractMojo {
 			}
 
 			args.add("--debug=" + debug);
+
+            if(rawArguments!=null){
+                args.addAll(rawArguments);
+            }
+
 			getLog().info("Running XMLVM with command line: " + args);
 			Main.main(args.toArray(new String[args.size()]));
 		} catch (Exception e) {
